@@ -16,7 +16,7 @@ app.use(morgan("tiny"));
 app.use(authenticateJWT);
 app.use(routes);
 
-/** Generic error handler; anything unhandled goes here. */
+// Generic error handler 
 app.use(function (err, req, res, next) {
     if (process.env.NODE_ENV !== "test") console.error(err.stack);
     const status = err.status || 500;
@@ -28,7 +28,7 @@ app.use(function (err, req, res, next) {
   });
   
   
-  /** Handle 404 errors -- this matches everything */
+  // Handle 404 errors
   app.use(function (req, res, next) {
     return next(new NotFoundError());
   });

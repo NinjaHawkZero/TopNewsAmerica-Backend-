@@ -114,6 +114,62 @@ class User {
         }
 
     }
+
+
+
+    //Update User Data
+    static async update(currentUsername, newUsername, password ) {
+
+        if(password) { password = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
+        }
+
+
+        if(newUsername && password) {
+            const result = await db.query(
+                `UPDATE users
+                SET username = $1,
+                password = $2,
+                WHERE username = $3
+                RETURNING username`, [newUsername, password, currentUsername]
+            );
+
+            const user = result.rows[0];
+            if (!user) throw new NotFoundError(`No user: ${username}`);
+
+            delete user.password;
+            return user
+        } else if (newUsername && !password) {
+            const result = await db.query(
+                `UPDATE users
+                SET username = $1,
+                WHERE username = $2
+                RETURNING username`, [newUsername, currentUsername]
+            );
+
+            const user = result.rows[0];
+            if (!user) throw new NotFoundError(`No user: ${username}`);
+                return user
+        } else if (password) {
+            const result = await db.query(
+                `UPDATE users
+                SET password = $1,
+                WHERE username = $2
+                RETURNING username`, [password, currentUsername]
+            );
+            const user = result.rows[0];
+            if (!user) throw new NotFoundError(`No user: ${username}`);
+
+            delete user.password;
+            return user
+
+        }
+
+
+    }
+
+
+
+     
     
   
     //Retrieve array of user stories, based on user id

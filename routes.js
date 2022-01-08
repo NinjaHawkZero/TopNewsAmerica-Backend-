@@ -54,6 +54,18 @@ router.get("/:username", ensureCorrectUser, async function (req, res, next) {
     }
 })
 
+//Update User data
+router.patch("/:username", ensureCorrectUser, async function(req, res, next) {
+    try {
+        let {username, password} = req.body;
+        const user = await User.update(req.params.username, username, password);
+
+        return res.json({user});
+    } catch (err) {
+        return next(err);
+    }
+});
+
 
 //Retrieve Current Stories
 router.get("/stories", ensureLoggedIn, async function(req, res, next) {
