@@ -3,6 +3,8 @@
 
 const { BCRYPT_WORK_FACTOR } = require("../config");
 const db = require("../db");
+const bcrypt = require("bcrypt")
+
 const { BadRequestError, UnauthorizedError, NotFoundError } = require("../expressError");
 
 class User {
@@ -101,7 +103,7 @@ class User {
                 url, 
                 urlToImage)
                 VALUES ($1, $2, $3, $4, $5, $6, $7)
-                RETURNING id, name, title`,
+                RETURNING id, title, description, saved_by`,
                 [saved_by, author, title, description, published_at, url, urlToImage]
             );
 

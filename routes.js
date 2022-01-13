@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("./config");
 const { ExpressError } = require("./expressError");
 const { ensureCorrectUser, ensureLoggedIn } = require("./middleware/auth");
+const axios = require("axios");
 
 const {User} = require("./models/users");
 const API_KEY = `923cdfb34c684486ae9912d7ada90b4b`
@@ -17,7 +18,7 @@ const router = new express.Router();
 router.post("/register", async function(req, res, next) {
     try {
         let {username , password} = req.body;
-         const newUser = await User.register({username, password});
+         const newUser = await User.Register({username, password});
         const token = jwt.sign(newUser.username, SECRET_KEY);
         return res.status(201).json({token})
     }
@@ -70,11 +71,11 @@ router.patch("/:username", ensureCorrectUser, async function(req, res, next) {
 //Retrieve Current Stories
 router.get("/stories", ensureLoggedIn, async function(req, res, next) {
 try{
-    let res = await axios.get(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`);
+    let result = await axios.get(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`);
 
-    let stories = res.data.articles;
-    let newStories = stories.map(function(story) {delete story.source && delete story.content; return story})
-    return res.status(201).json({newStories})}
+    let stories = result.data.articles;
+    let newStories = stories.map((story) => {delete story.source && delete story.content; return story})
+    return res.status(201).json(newStories)}
 
     catch(err) {return next(err)}
 })
@@ -91,7 +92,7 @@ router.post("/:username/saveStory", ensureCorrectUser, async function(req, res, 
     try {
         let story = req.body;
         let user = await User.getUser(req.params.username)
-        let savedStory = User.saveStory(story, user.id);
+        let savedStory = await User.saveStory(story, user.id);
 
         return res.status(201).json({savedStory})
     }
