@@ -59,7 +59,7 @@ router.get("/:username", ensureCorrectUser, async function (req, res, next) {
 router.patch("/:username", ensureCorrectUser, async function(req, res, next) {
     try {
         let {username, password} = req.body;
-        const user = await User.update(req.params.username, username, password);
+        const user = await User.update(req.params.username, {username, password});
 
         return res.json({user});
     } catch (err) {
@@ -74,8 +74,8 @@ try{
     let result = await axios.get(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`);
 
     let stories = result.data.articles;
-    let newStories = stories.map((story) => {delete story.source && delete story.content; return story})
-    return res.status(201).json(newStories)}
+    let newStories = stories.map((story) => {delete story.source; return story})
+    return res.status(201).json({newStories})}
 
     catch(err) {return next(err)}
 })
