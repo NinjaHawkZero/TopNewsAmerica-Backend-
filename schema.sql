@@ -7,14 +7,14 @@ CREATE TABLE users(
 
 CREATE TABLE storys (
     id SERIAL PRIMARY KEY,
-    saved_by INTEGER
+    savedBy INTEGER
     REFERENCES users ON DELETE CASCADE,
-    author TEXT NOT NULL,
-    title TEXT NOT NULL,
-    description TEXT NOT NULL,
-    published_at TEXT NOT NULL,
-    url TEXT NOT NULL,
-    urlToImage TEXT NOT NULL
+    author TEXT,
+    title TEXT,
+    description TEXT,
+    publishedAt TEXT,
+    url TEXT,
+    urlToImage TEXT 
 
 )
 

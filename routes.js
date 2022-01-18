@@ -68,21 +68,6 @@ router.patch("/:username", ensureCorrectUser, async function(req, res, next) {
 });
 
 
-//Retrieve Current Stories
-router.get("/stories", ensureLoggedIn, async function(req, res, next) {
-try{
-    let result = await axios.get(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`);
-
-    let stories = result.data.articles;
-    let newStories = stories.map((story) => {delete story.source; return story})
-    return res.status(201).json({newStories})}
-
-    catch(err) {return next(err)}
-})
-
-
-
-
 
 
 
@@ -118,10 +103,10 @@ router.get("/:username/userstories", ensureCorrectUser, async function(req, res,
 
 router.delete("/:username/deleteStory", ensureCorrectUser, async function(req, res, next) {
     try{
-        let storyId = req.body;
-        await User.removeStory(storyId);
+        let {id} = req.body;
+        await User.removeStory(id);
 
-        return res.json({deleted: storyId})
+        return res.json({deleted: id})
     }
     catch(err) {return next(err)}
 })

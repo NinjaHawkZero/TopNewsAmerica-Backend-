@@ -91,21 +91,21 @@ class User {
 
     //Save Story To User
    static  async saveStory( story, id ){
-         story.saved_by = id;
-         let {saved_by, author, title, description, published_at, url, urlToImage} = story;
+         story.savedBy = id;
+         let {savedBy, author, title, description,  publishedAt, url, urlToImage} = story;
         if(story.id === undefined) {
             const result = await db.query(
                 `INSERT INTO storys
-                (saved_by,
+                (savedBy,
                 author,
                 title,
                 description,
-                published_at,
+                publishedAt,
                 url, 
                 urlToImage)
                 VALUES ($1, $2, $3, $4, $5, $6, $7)
-                RETURNING id, title, description, saved_by`,
-                [saved_by, author, title, description, published_at, url, urlToImage]
+                RETURNING id, title, description, savedBy`,
+                [savedBy, author, title, description, publishedAt, url, urlToImage]
             );
 
            let  savedStory = result.rows[0];
@@ -136,6 +136,8 @@ class User {
                     RETURNING username, password`;
 
 
+
+
         const result = await db.query(updateQuery, [...values, currentUsername]);
 
         const user = result.rows[0];
@@ -157,15 +159,15 @@ class User {
    static async getStories(id){
        const results = await db.query(
            `SELECT id,
-           saved_by,
+           savedBy,
            author,
            title,
            description,
-           published_at,
+           publishedAt,
            url,
            urlToImage
            FROM storys
-           WHERE saved_by = $1`,
+           WHERE savedBy = $1`,
            [id]
        );
 

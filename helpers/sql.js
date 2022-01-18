@@ -10,7 +10,7 @@ function sqlForUpdate(dataToUpdate, jsToSql) {
 
 
    let sqlCols = keys.map((colName, idx) =>
-   `"${jsToSql[colName]  || colName}"=$${idx + 1}`);
+   `'${jsToSql[colName]  || colName}'=$${idx + 1}`, );
 
    return {
 
