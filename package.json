@@ -1,4 +1,8 @@
 {
+  "engines": {
+    "node": "16.7.0",
+    "npm": "7.20.3"
+  },
   "dependencies": {
     "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
@@ -7,13 +11,17 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
+    "jest": "^27.4.7",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
-    "pg": "^8.7.1"
+    "pg": "^8.7.1",
+    "supertest": "^6.2.2"
+  },
+  "scripts": {
+    "test": "jest",
+    "client": "cd .. && cd topnewsamerica && npm start",
+    "build": "cd .. && cd topnewsamerica && npm run build",
+    "start": "node server.js",
+    "heroku-postbuild": "cd .. && cd topnewsamerica && npm install --only=dev && npm install && npm run build"
   }
-,
-"scripts": {
-  "start": "node index.js",
-  "heroku-postbuild": "cd topnewsamerica && npm install && npm run build"
-}
 }

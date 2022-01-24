@@ -123,7 +123,7 @@ class User {
     //Update User Data
     static async update(currentUsername, data ) {
 
-        if(data.password) { data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
+        if(data.password) { data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR)
         }
 
 
